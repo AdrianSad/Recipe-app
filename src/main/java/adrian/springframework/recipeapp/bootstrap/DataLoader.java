@@ -7,6 +7,7 @@ import adrian.springframework.recipeapp.repositories.UnitOfMeasureRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         recipeRepository.saveAll(getRecipes());
     }
@@ -100,22 +102,21 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "Fried rice is best made with leftover rice that's at least a day old. Otherwise it becomes gummy in the skillet.\n" +
                 "If you don’t have any leftover rice from the night before, cook a batch of rice and spread it on a large baking sheet or several large plates. Let the rice dry out for about 1 to 2 hours before using it for fried rice.\n" +
                 "Rice sticks to the pan very easily, so make sure to use a wok or pan that doesn’t have a sticky surface. I usually cook stir-fries in my seasoned carbon steel wok, but cast iron or nonstick pans work well, too. You might need to add a little more oil if things aren’t releasing easily.\n");
-        chickenRiceNotes.setRecipe(chickenRiceRecipe);
         chickenRiceRecipe.setNotes(chickenRiceNotes);
-        chickenRiceRecipe.getIngredients().add(new Ingredient("boneless skinless chicken thighs", new BigDecimal(".75"), poundUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("salt, divided", new BigDecimal(1), teaspoonUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("canola oil (or any high heat oil), divided", new BigDecimal(3), tablespoonUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("large eggs, whisked", new BigDecimal(3), null,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("yellow onions, diced", new BigDecimal(".66"), cupUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("garlic, minced", new BigDecimal(2), clovesUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("minced ginger", new BigDecimal(2), teaspoonUom,chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("large carrot, peeled and diced", new BigDecimal(1), null, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("frozen peas, rinsed under warm tap water for a few seconds thaw", new BigDecimal(".66"), cupUom, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("cooked jasmine rice (preferably leftover from at least a day before, see Recipe Note)", new BigDecimal(4), cupUom, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("scallions, sliced (separate the white and light green parts from the dark green part)", new BigDecimal(2), null, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("Chinese five-spice powder (optional)", new BigDecimal(".5"), teaspoonUom, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("soy sauce or tamari", new BigDecimal("2.5"), tablespoonUom, chickenRiceRecipe));
-        chickenRiceRecipe.getIngredients().add(new Ingredient("sesame oil", new BigDecimal(1), teaspoonUom, chickenRiceRecipe));
+        chickenRiceRecipe.addIngredient(new Ingredient("boneless skinless chicken thighs", new BigDecimal(".75"), poundUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("salt, divided", new BigDecimal(1), teaspoonUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("canola oil (or any high heat oil), divided", new BigDecimal(3), tablespoonUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("large eggs, whisked", new BigDecimal(3), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("yellow onions, diced", new BigDecimal(".66"), cupUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("garlic, minced", new BigDecimal(2), clovesUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("minced ginger", new BigDecimal(2), teaspoonUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("large carrot, peeled and diced", new BigDecimal(1), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("frozen peas, rinsed under warm tap water for a few seconds thaw", new BigDecimal(".66"), cupUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("cooked jasmine rice (preferably leftover from at least a day before, see Recipe Note)", new BigDecimal(4), cupUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("scallions, sliced (separate the white and light green parts from the dark green part)", new BigDecimal(2), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("Chinese five-spice powder (optional)", new BigDecimal(".5"), teaspoonUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("soy sauce or tamari", new BigDecimal("2.5"), tablespoonUom));
+        chickenRiceRecipe.addIngredient(new Ingredient("sesame oil", new BigDecimal(1), teaspoonUom));
 
         chickenRiceRecipe.getCategories().add(chineseCategory);
         recipes.add(chickenRiceRecipe);
@@ -129,16 +130,15 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         cocktailRecipe.setDirections("1 Make the cocktail: Add the ingredients to a cocktail shaker. Fill with 8 to 10 ounces crushed ice, then shake vigorously until the cocktail shaker is too cold to hold, about 30 seconds. Pour into a hurricane glass (don't strain!). Pop in a straw and garnish with an orange slice and maraschino cherry.\n");
         Notes cocktailNotes = new Notes();
         cocktailNotes.setRecipeNotes("If using passion fruit syrup instead of purée, leave out the simple syrup – otherwise, the drink may be too sweet. ");
-        cocktailNotes.setRecipe(cocktailRecipe);
         cocktailRecipe.setNotes(cocktailNotes);
-        cocktailRecipe.getIngredients().add(new Ingredient("dark rum (I used Myer's Original Dark Rum)", new BigDecimal(2), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("light rum (I used Mount Gay Silver Rum)", new BigDecimal(2), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("passion fruit purée", new BigDecimal("1.5"), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("freshly-squeezed orange juice", new BigDecimal(1), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("freshly-squeezed lime juice", new BigDecimal(1), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("simple syrup", new BigDecimal("0.5"), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("grenadine syrup", new BigDecimal("0.5"), ounceUom, chickenRiceRecipe));
-        cocktailRecipe.getIngredients().add(new Ingredient("Orange and maraschino cherry, for garnish", new BigDecimal(1), sliceUom, chickenRiceRecipe));
+        cocktailRecipe.addIngredient(new Ingredient("dark rum (I used Myer's Original Dark Rum)", new BigDecimal(2), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("light rum (I used Mount Gay Silver Rum)", new BigDecimal(2), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("passion fruit purée", new BigDecimal("1.5"), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("freshly-squeezed orange juice", new BigDecimal(1), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("freshly-squeezed lime juice", new BigDecimal(1), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("simple syrup", new BigDecimal("0.5"), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("grenadine syrup", new BigDecimal("0.5"), ounceUom));
+        cocktailRecipe.addIngredient(new Ingredient("Orange and maraschino cherry, for garnish", new BigDecimal(1), sliceUom));
         cocktailRecipe.getCategories().add(americanCategory);
         recipes.add(cocktailRecipe);
 
