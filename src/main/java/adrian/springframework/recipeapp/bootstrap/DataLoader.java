@@ -35,6 +35,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private List<Recipe> getRecipes(){
         List<Recipe> recipes = new ArrayList<>(2);
 
+        Optional<UnitOfMeasure> nullUomOptional = unitOfMeasureRepository.findByName("");
+        if(!nullUomOptional.isPresent()){
+            throw new RuntimeException("Expected Unit Of Measure Not Found");
+        }
         Optional<UnitOfMeasure> poundUomOptional = unitOfMeasureRepository.findByName("Pound");
         if(!poundUomOptional.isPresent()){
             throw new RuntimeException("Expected Unit Of Measure Not Found");
@@ -64,6 +68,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
             throw new RuntimeException("Expected Unit Of Measure Not Found");
         }
 
+        UnitOfMeasure nullUom = nullUomOptional.get();
         UnitOfMeasure poundUom = poundUomOptional.get();
         UnitOfMeasure teaspoonUom = teaspoonUomOptional.get();
         UnitOfMeasure tablespoonUom = tablespoonUomOptional.get();
@@ -89,7 +94,9 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         chickenRiceRecipe.setPreparationTime(10);
         chickenRiceRecipe.setCookTime(15);
         chickenRiceRecipe.setDifficulty(Difficulty.MODERATE);
-        chickenRiceRecipe.setSource("https://www.simplyrecipes.com/recipes/chicken_fried_rice/");
+        chickenRiceRecipe.setUrl("https://www.simplyrecipes.com/recipes/chicken_fried_rice/");
+        chickenRiceRecipe.setSource("simplyrecipes.com");
+        chickenRiceRecipe.setServings(2);
         chickenRiceRecipe.setDirections(
                 "1 Prepare the chicken: Chop the chicken into small 1/4-inch to 1/2-inch cubes. Sprinkle 1/2 teaspoon of salt over the chicken and mix to combine. Set the chicken aside for about 10 minutes (I usually use this time to chop all the vegetables).\n" +
                 "2 Scramble the egg: Heat a wok or large sauté pan over medium-high heat. Swirl in a tablespoon of oil and add the whisked eggs. Use a spatula to quickly scramble the eggs, breaking the curds into smaller pieces as they come together. Transfer the eggs to a plate.\n" +
@@ -106,14 +113,14 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         chickenRiceRecipe.addIngredient(new Ingredient("boneless skinless chicken thighs", new BigDecimal(".75"), poundUom));
         chickenRiceRecipe.addIngredient(new Ingredient("salt, divided", new BigDecimal(1), teaspoonUom));
         chickenRiceRecipe.addIngredient(new Ingredient("canola oil (or any high heat oil), divided", new BigDecimal(3), tablespoonUom));
-        chickenRiceRecipe.addIngredient(new Ingredient("large eggs, whisked", new BigDecimal(3), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("large eggs, whisked", new BigDecimal(3), nullUom));
         chickenRiceRecipe.addIngredient(new Ingredient("yellow onions, diced", new BigDecimal(".66"), cupUom));
         chickenRiceRecipe.addIngredient(new Ingredient("garlic, minced", new BigDecimal(2), clovesUom));
         chickenRiceRecipe.addIngredient(new Ingredient("minced ginger", new BigDecimal(2), teaspoonUom));
-        chickenRiceRecipe.addIngredient(new Ingredient("large carrot, peeled and diced", new BigDecimal(1), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("large carrot, peeled and diced", new BigDecimal(1), nullUom));
         chickenRiceRecipe.addIngredient(new Ingredient("frozen peas, rinsed under warm tap water for a few seconds thaw", new BigDecimal(".66"), cupUom));
         chickenRiceRecipe.addIngredient(new Ingredient("cooked jasmine rice (preferably leftover from at least a day before, see Recipe Note)", new BigDecimal(4), cupUom));
-        chickenRiceRecipe.addIngredient(new Ingredient("scallions, sliced (separate the white and light green parts from the dark green part)", new BigDecimal(2), null));
+        chickenRiceRecipe.addIngredient(new Ingredient("scallions, sliced (separate the white and light green parts from the dark green part)", new BigDecimal(2), nullUom));
         chickenRiceRecipe.addIngredient(new Ingredient("Chinese five-spice powder (optional)", new BigDecimal(".5"), teaspoonUom));
         chickenRiceRecipe.addIngredient(new Ingredient("soy sauce or tamari", new BigDecimal("2.5"), tablespoonUom));
         chickenRiceRecipe.addIngredient(new Ingredient("sesame oil", new BigDecimal(1), teaspoonUom));
@@ -126,7 +133,9 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         cocktailRecipe.setPreparationTime(5);
         cocktailRecipe.setCookTime(0);
         cocktailRecipe.setDifficulty(Difficulty.EASY);
-        cocktailRecipe.setSource("https://www.simplyrecipes.com/recipes/hurricane_cocktail/");
+        cocktailRecipe.setUrl("https://www.simplyrecipes.com/recipes/hurricane_cocktail/");
+        cocktailRecipe.setSource("simplyrecipes.com");
+        cocktailRecipe.setServings(1);
         cocktailRecipe.setDirections("1 Make the cocktail: Add the ingredients to a cocktail shaker. Fill with 8 to 10 ounces crushed ice, then shake vigorously until the cocktail shaker is too cold to hold, about 30 seconds. Pour into a hurricane glass (don't strain!). Pop in a straw and garnish with an orange slice and maraschino cherry.\n");
         Notes cocktailNotes = new Notes();
         cocktailNotes.setRecipeNotes("If using passion fruit syrup instead of purée, leave out the simple syrup – otherwise, the drink may be too sweet. ");

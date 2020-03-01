@@ -3,6 +3,7 @@ INSERT INTO category (name) VALUES ('Mexican');
 INSERT INTO category (name) VALUES ('Italian');
 INSERT INTO category (name) VALUES ('Chinese');
 INSERT INTO category (name) VALUES ('American');
+INSERT INTO unit_of_measure (name) VALUES ('');
 INSERT INTO unit_of_measure (name) VALUES ('Teaspoon');
 INSERT INTO unit_of_measure (name) VALUES ('Tablespoon');
 INSERT INTO unit_of_measure (name) VALUES ('Cup');
