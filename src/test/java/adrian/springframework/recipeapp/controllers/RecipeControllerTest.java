@@ -33,7 +33,7 @@ class RecipeControllerTest {
         recipe.setId(1L);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         when(recipeService.findById(anyLong())).thenReturn(recipe);
-        mockMvc.perform(get("/recipe/show/1"))
+        mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("show"))
                 .andExpect(model().attributeExists("recipe"));
