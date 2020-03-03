@@ -87,7 +87,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <ul>
+                            <ul th:if="${not #lists.isEmpty(recipe.ingredients)}">
                                 <li th:remove="all">1 cup of water</li>
                                 <li th:remove="all">1 bag of tea</li>
                                 <li th:each="ingredient : ${recipe.ingredients}" th:text="${(ingredient.getAmount() + ' '
