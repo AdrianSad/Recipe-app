@@ -1,6 +1,5 @@
 package adrian.springframework.recipeapp.commands;
 
-import adrian.springframework.recipeapp.models.UnitOfMeasure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,5 +14,5 @@ public class IngredientCommand {
     private Long recipeId;
     private String name;
     private BigDecimal amount;
-    private UnitOfMeasure unitOfMeasure;
+    private UnitOfMeasureCommand uom;
 }
