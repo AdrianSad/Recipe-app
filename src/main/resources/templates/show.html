@@ -21,19 +21,30 @@
         <div class="col-md-6 offset-md-3">
             <div class="card border-primary">
                 <div class="card-header">
-                    <h1 class="card-title" th:text="${recipe.description}">Recipe description</h1>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h1 class="card-title" th:text="${recipe.description}">Recipe description</h1>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/image'}" role="button">Change image</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
                             <h5>Categories :</h5>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-3">
                             <ul>
                                 <li th:remove="all">cat one</li>
                                 <li th:remove="all">cat two</li>
                                 <li th:each="category : ${recipe.categories}" th:text="${category.getName()}">cat three</li>
                             </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="../../static/images/image_placeholder.jpg" th:if="${recipe.image != null}" th:src="@{'/recipe/' + ${recipe.id} + '/recipeImage'}" width="200" height="200" alt="Recipe's image">
+                            <img src="../../static/images/image_placeholder.jpg" th:unless="${recipe.image != null}" th:src="@{'/images/image_placeholder.jpg'}" width="200" height="200" alt="Recipe's image">
                         </div>
                     </div>
                     <div class="row">
@@ -83,10 +94,10 @@
             <div class="card border-primary" style="margin-top: 20px">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-11">
+                        <div class="col-md-10">
                             <h1 class="card-title">Ingredients</h1>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2" style="margin-top: 5px">
                             <a class="btn btn-primary" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
                         </div>
                     </div>

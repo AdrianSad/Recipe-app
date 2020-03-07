@@ -83,4 +83,27 @@ public class IngredientServiceImpl implements IngredientService{
             return new IngredientCommand();
         }
     }
+
+    @Override
+    public void deleteIngredientById(Long recipeId, Long id) {
+
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+        if(recipeOptional.isPresent()){
+
+            Optional<Ingredient> ingredientOptional = recipeOptional.get().getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(id))
+                    .findFirst();
+
+            if(ingredientOptional.isPresent()){
+                Ingredient ingredient = ingredientOptional.get();
+                ingredient.setRecipe(null);
+                Recipe recipe = recipeOptional.get();
+                recipe.getIngredients().remove(ingredientOptional.get());
+                recipeRepository.save(recipe);
+            }
+        }
+    }
+
+
 }

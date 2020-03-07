@@ -12,3 +12,4 @@ INSERT INTO unit_of_measure (name) VALUES ('Pound');
 INSERT INTO unit_of_measure (name) VALUES ('Cloves');
 INSERT INTO unit_of_measure (name) VALUES ('Ounce');
 INSERT INTO unit_of_measure (name) VALUES ('Slice');
+INSERT INTO unit_of_measure (name) VALUES ('Gram');
