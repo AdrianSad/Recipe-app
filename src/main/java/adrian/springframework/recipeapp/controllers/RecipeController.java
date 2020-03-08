@@ -1,10 +1,13 @@
 package adrian.springframework.recipeapp.controllers;
 
 import adrian.springframework.recipeapp.commands.RecipeCommand;
+import adrian.springframework.recipeapp.exceptions.NotFoundException;
 import adrian.springframework.recipeapp.services.RecipeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RecipeController {
@@ -18,6 +21,7 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("recipe/{id}/show")
     public String getRecipe(@PathVariable String id, Model model){
+
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
         return "show";
     }
@@ -25,6 +29,7 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("recipe/new")
     public String newRecipe(Model model){
+
         model.addAttribute("recipe", new RecipeCommand());
         return "recipeForm";
     }
@@ -32,6 +37,7 @@ public class RecipeController {
     @PostMapping
     @RequestMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand){
+
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
@@ -39,6 +45,7 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
+
         model.addAttribute("recipe",recipeService.findRecipeCommandById(Long.valueOf(id)));
         return "recipeForm";
     }
@@ -46,7 +53,17 @@ public class RecipeController {
     @GetMapping
     @RequestMapping("recipe/{id}/delete")
     public String deleteRecipe(@PathVariable String id){
+
         recipeService.deleteById(Long.valueOf(id));
         return "redirect:/";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404ErrorPage");
+        return modelAndView;
     }
 }

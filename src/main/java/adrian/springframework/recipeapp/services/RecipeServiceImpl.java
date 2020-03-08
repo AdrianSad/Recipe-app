@@ -3,12 +3,14 @@ package adrian.springframework.recipeapp.services;
 import adrian.springframework.recipeapp.commands.RecipeCommand;
 import adrian.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import adrian.springframework.recipeapp.converters.RecipeToRecipeCommand;
+import adrian.springframework.recipeapp.exceptions.NotFoundException;
 import adrian.springframework.recipeapp.models.Recipe;
 import adrian.springframework.recipeapp.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,7 +35,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElse(null);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+
+        if(recipeOptional.isPresent()){
+            return recipeOptional.get();
+        } else {
+            throw new NotFoundException("Recipe Not Found");
+        }
     }
 
     @Override
