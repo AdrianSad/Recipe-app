@@ -5,6 +5,7 @@ import adrian.springframework.recipeapp.repositories.CategoryRepository;
 import adrian.springframework.recipeapp.repositories.RecipeRepository;
 import adrian.springframework.recipeapp.repositories.UnitOfMeasureRepository;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
+@Profile("default")
+public class H2DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    public DataLoader(RecipeRepository recipeRepository, CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+    public H2DataLoader(RecipeRepository recipeRepository, CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
