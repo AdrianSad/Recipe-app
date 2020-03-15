@@ -46,41 +46,41 @@ class IngredientServiceImplTest {
     @Test
     void findByRecipeIdAndIngredientId() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         Ingredient ingredient = new Ingredient();
-        ingredient.setId(2L);
+        ingredient.setId("2");
         recipe.addIngredient(ingredient);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 2L);
+        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId("1", "2");
 
         assertEquals(Long.valueOf(1L), recipe.getId());
         assertEquals(Long.valueOf(2L), ingredientCommand.getId());
 
-        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,times(1)).findById(anyString());
     }
 
     @Test
     void saveIngredientCommand() {
         IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setId(3L);
-        ingredientCommand.setRecipeId(2L);
+        ingredientCommand.setId("3");
+        ingredientCommand.setRecipeId("2");
 
         Optional<Recipe> recipeOptional = Optional.of(new Recipe());
 
         Recipe recipe = new Recipe();
         recipe.addIngredient(new Ingredient());
-        recipe.getIngredients().iterator().next().setId(1L);
+        recipe.getIngredients().iterator().next().setId("1");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(recipe);
 
         IngredientCommand savedIngredient = ingredientService.saveIngredientCommand(ingredientCommand);
 
         assertEquals(Long.valueOf(3L), savedIngredient.getId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, times(1)).save(any(Recipe.class));
     }
 }

@@ -4,6 +4,7 @@ import adrian.springframework.recipeapp.models.*;
 import adrian.springframework.recipeapp.repositories.CategoryRepository;
 import adrian.springframework.recipeapp.repositories.RecipeRepository;
 import adrian.springframework.recipeapp.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
-@Profile("default")
-public class H2DataLoader implements ApplicationListener<ContextRefreshedEvent> {
+public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    public H2DataLoader(RecipeRepository recipeRepository, CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+    public DataLoader(RecipeRepository recipeRepository, CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
@@ -31,7 +32,66 @@ public class H2DataLoader implements ApplicationListener<ContextRefreshedEvent> 
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.debug("DATA LOADING");
+        loadCategories();
+        loadUom();
         recipeRepository.saveAll(getRecipes());
+    }
+
+    private void loadCategories(){
+        Category cat1 = new Category();
+        cat1.setName("American");
+        categoryRepository.save(cat1);
+
+        Category cat2 = new Category();
+        cat2.setName("Chinese");
+        categoryRepository.save(cat2);
+
+        Category cat3 = new Category();
+        cat3.setName("Mexican");
+        categoryRepository.save(cat3);
+
+        Category cat4 = new Category();
+        cat4.setName("Polish");
+        categoryRepository.save(cat4);
+    }
+
+    private void loadUom(){
+        UnitOfMeasure uom1 = new UnitOfMeasure();
+        uom1.setName("Teaspoon");
+        unitOfMeasureRepository.save(uom1);
+
+        UnitOfMeasure uom2 = new UnitOfMeasure();
+        uom2.setName("Tablespoon");
+        unitOfMeasureRepository.save(uom2);
+
+        UnitOfMeasure uom3 = new UnitOfMeasure();
+        uom3.setName("Cup");
+        unitOfMeasureRepository.save(uom3);
+
+        UnitOfMeasure uom4 = new UnitOfMeasure();
+        uom4.setName("Pound");
+        unitOfMeasureRepository.save(uom4);
+
+        UnitOfMeasure uom5 = new UnitOfMeasure();
+        uom5.setName("Ounce");
+        unitOfMeasureRepository.save(uom5);
+
+        UnitOfMeasure uom6 = new UnitOfMeasure();
+        uom6.setName("");
+        unitOfMeasureRepository.save(uom6);
+
+        UnitOfMeasure uom7 = new UnitOfMeasure();
+        uom7.setName("Pint");
+        unitOfMeasureRepository.save(uom7);
+
+        UnitOfMeasure uom8 = new UnitOfMeasure();
+        uom8.setName("Cloves");
+        unitOfMeasureRepository.save(uom8);
+
+        UnitOfMeasure uom9 = new UnitOfMeasure();
+        uom9.setName("Slice");
+        unitOfMeasureRepository.save(uom9);
     }
 
     private List<Recipe> getRecipes(){
@@ -155,5 +215,4 @@ public class H2DataLoader implements ApplicationListener<ContextRefreshedEvent> 
 
         return recipes;
     }
-
 }

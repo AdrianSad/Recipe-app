@@ -3,27 +3,25 @@ package adrian.springframework.recipeapp.models;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"recipe"})
-@Entity
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String name;
     private BigDecimal amount;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @DBRef
     private UnitOfMeasure unitOfMeasure;
-
-    @ManyToOne
     private Recipe recipe;
+
+    public Ingredient(){}
 
     public Ingredient(String name, BigDecimal amount, UnitOfMeasure unitOfMeasure){
         this.name = name;
@@ -37,7 +35,4 @@ public class Ingredient {
         this.unitOfMeasure = unitOfMeasure;
         this.recipe = recipe;
     }
-
-    public Ingredient(){}
-
 }
