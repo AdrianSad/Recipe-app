@@ -52,7 +52,7 @@ public class IngredientController {
     public String saveOrUpdateIngredient(@ModelAttribute IngredientCommand ingredientCommand){
 
         IngredientCommand savedIngredient = ingredientService.saveIngredientCommand(ingredientCommand);
-        return "redirect:/recipe/" + savedIngredient.getRecipeId() + "/ingredient/" + savedIngredient.getId() + "/show";
+        return "redirect:/recipe/" + ingredientCommand.getRecipeId() + "/ingredient/" + savedIngredient.getId() + "/show";
     }
 
     @GetMapping("recipe/{recipeId}/ingredient/new")
