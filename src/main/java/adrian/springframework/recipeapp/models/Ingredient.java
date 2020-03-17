@@ -1,6 +1,5 @@
 package adrian.springframework.recipeapp.models;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -19,7 +18,6 @@ public class Ingredient {
 
     @DBRef
     private UnitOfMeasure unitOfMeasure;
-    private Recipe recipe;
 
     public Ingredient(){}
 
@@ -33,6 +31,6 @@ public class Ingredient {
         this.name = name;
         this.amount = amount;
         this.unitOfMeasure = unitOfMeasure;
-        this.recipe = recipe;
+        //this.recipe = recipe;
     }
 }
