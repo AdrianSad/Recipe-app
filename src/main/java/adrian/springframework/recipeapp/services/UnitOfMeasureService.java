@@ -1,9 +1,8 @@
 package adrian.springframework.recipeapp.services;
 
 import adrian.springframework.recipeapp.commands.UnitOfMeasureCommand;
-
-import java.util.Set;
+import reactor.core.publisher.Flux;
 
 public interface UnitOfMeasureService {
-    Set<UnitOfMeasureCommand> uomCommandsList();
+    Flux<UnitOfMeasureCommand> uomCommandsList();
 }

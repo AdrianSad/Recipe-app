@@ -1,6 +1,6 @@
 package adrian.springframework.recipeapp.models;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +9,7 @@ class CategoryTest {
 
     Category category;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         category = new Category();
     }
@@ -22,7 +22,7 @@ class CategoryTest {
     }
 
     @Test
-    void getName() throws Exception {
+    void setName() throws Exception {
         category.setName("testCategory");
     }
 

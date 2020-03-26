@@ -3,7 +3,7 @@ package adrian.springframework.recipeapp.repositories;
 import adrian.springframework.recipeapp.bootstrap.DataLoader;
 import adrian.springframework.recipeapp.models.UnitOfMeasure;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;

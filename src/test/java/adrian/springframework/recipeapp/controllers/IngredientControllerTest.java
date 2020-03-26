@@ -2,6 +2,7 @@ package adrian.springframework.recipeapp.controllers;
 
 import adrian.springframework.recipeapp.commands.IngredientCommand;
 import adrian.springframework.recipeapp.commands.RecipeCommand;
+import adrian.springframework.recipeapp.commands.UnitOfMeasureCommand;
 import adrian.springframework.recipeapp.services.IngredientService;
 import adrian.springframework.recipeapp.services.RecipeService;
 import adrian.springframework.recipeapp.services.UnitOfMeasureService;
@@ -12,10 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,7 +61,7 @@ class IngredientControllerTest {
     public void testShowIngredient() throws Exception {
         IngredientCommand ingredientCommand = new IngredientCommand();
 
-        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand);
+        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(Mono.just(ingredientCommand));
 
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
                 .andExpect(status().isOk())
@@ -73,8 +73,8 @@ class IngredientControllerTest {
     public void testUpdateIngredientForm() throws Exception {
         IngredientCommand ingredientCommand = new IngredientCommand();
 
-        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand);
-        when(unitOfMeasureService.uomCommandsList()).thenReturn(new HashSet<>());
+        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(Mono.just(ingredientCommand));
+        when(unitOfMeasureService.uomCommandsList()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
         mockMvc.perform(get("/recipe/1/ingredient/2/update"))
                 .andExpect(status().isOk())
@@ -89,7 +89,7 @@ class IngredientControllerTest {
         command.setId("3");
         command.setRecipeId("2");
 
-        when(ingredientService.saveIngredientCommand(any())).thenReturn(command);
+        when(ingredientService.saveIngredientCommand(any())).thenReturn(Mono.just(command));
 
         mockMvc.perform(post("/recipe/2/ingredient")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -106,7 +106,7 @@ class IngredientControllerTest {
         recipeCommand.setId("1");
 
         when(recipeService.findRecipeCommandById(anyString())).thenReturn(recipeCommand);
-        when(unitOfMeasureService.uomCommandsList()).thenReturn(new HashSet<>());
+        when(unitOfMeasureService.uomCommandsList()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
         mockMvc.perform(get("/recipe/1/ingredient/new"))
                 .andExpect(status().isOk())
