@@ -5,12 +5,10 @@ import adrian.springframework.recipeapp.converters.IngredientCommandToIngredient
 import adrian.springframework.recipeapp.converters.IngredientToIngredientCommand;
 import adrian.springframework.recipeapp.models.Ingredient;
 import adrian.springframework.recipeapp.models.Recipe;
-import adrian.springframework.recipeapp.repositories.RecipeRepository;
 import adrian.springframework.recipeapp.repositories.UnitOfMeasureRepository;
 import adrian.springframework.recipeapp.repositories.reactive.RecipeReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -20,14 +18,12 @@ import java.util.Optional;
 public class IngredientServiceImpl implements IngredientService {
 
     private final RecipeReactiveRepository recipeReactiveRepository;
-    private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final IngredientCommandToIngredient ingredientCommandToIngredient;
 
-    public IngredientServiceImpl(RecipeReactiveRepository recipeReactiveRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient) {
+    public IngredientServiceImpl(RecipeReactiveRepository recipeReactiveRepository, UnitOfMeasureRepository unitOfMeasureRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient) {
         this.recipeReactiveRepository = recipeReactiveRepository;
-        this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
@@ -55,13 +51,11 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @Transactional
     public Mono<IngredientCommand> saveIngredientCommand(IngredientCommand ingredientCommand) {
 
-        Optional<Recipe> recipeOptional = recipeRepository.findById(ingredientCommand.getRecipeId());
+        Recipe recipe = recipeReactiveRepository.findById(ingredientCommand.getRecipeId()).block();
 
-        if (recipeOptional.isPresent()) {
-            Recipe recipe = recipeOptional.get();
+        if (recipe != null) {
             Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
                     .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
                     .findFirst();
@@ -77,7 +71,7 @@ public class IngredientServiceImpl implements IngredientService {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(ingredientCommand);
                 recipe.addIngredient(ingredient);
             }
-            Recipe savedRecipe = recipeRepository.save(recipe);
+            Recipe savedRecipe = recipeReactiveRepository.save(recipe).block();
 
             Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(ingredientCommand.getId()))
@@ -104,19 +98,18 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Mono<Void> deleteIngredientById(String recipeId, String id) {
 
-        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        Recipe recipe = recipeReactiveRepository.findById(recipeId).block();
 
-        if (recipeOptional.isPresent()) {
+        if (recipe != null) {
 
-            Optional<Ingredient> ingredientOptional = recipeOptional.get().getIngredients().stream()
+            Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
                     .filter(ingredient -> ingredient.getId().equals(id))
                     .findFirst();
 
             if (ingredientOptional.isPresent()) {
-                Ingredient ingredient = ingredientOptional.get();
-                Recipe recipe = recipeOptional.get();
+
                 recipe.getIngredients().remove(ingredientOptional.get());
-                recipeRepository.save(recipe);
+                recipeReactiveRepository.save(recipe).block();
             }
         }
 

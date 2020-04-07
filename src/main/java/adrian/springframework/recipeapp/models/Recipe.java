@@ -2,7 +2,6 @@ package adrian.springframework.recipeapp.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ public class Recipe {
     private Byte[] image;
     private Notes notes;
     private Difficulty difficulty;
-
-    @DBRef
     private List<Category> categories = new ArrayList<>();
 
     public Recipe addIngredient(Ingredient ingredient){

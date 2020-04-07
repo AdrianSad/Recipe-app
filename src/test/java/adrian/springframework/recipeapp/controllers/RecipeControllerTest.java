@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -41,7 +42,7 @@ class RecipeControllerTest {
         Recipe recipe = new Recipe();
         recipe.setId("1");
 
-        when(recipeService.findById(anyString())).thenReturn(recipe);
+        when(recipeService.findById(anyString())).thenReturn(Mono.just(recipe));
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
@@ -61,7 +62,7 @@ class RecipeControllerTest {
     void testPostNewRecipeForm() throws Exception {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId("2");
-        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
+        when(recipeService.saveRecipeCommand(any())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -76,7 +77,7 @@ class RecipeControllerTest {
     void testGetUpdateView() throws Exception {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId("2");
-        when(recipeService.findRecipeCommandById(anyString())).thenReturn(recipeCommand);
+        when(recipeService.findRecipeCommandById(anyString())).thenReturn(Mono.just(recipeCommand));
 
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
