@@ -1,31 +1,34 @@
 package adrian.springframework.recipeapp.controllers;
 
 import adrian.springframework.recipeapp.commands.RecipeCommand;
-import adrian.springframework.recipeapp.exceptions.NotFoundException;
 import adrian.springframework.recipeapp.services.RecipeService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @Controller
 public class RecipeController {
 
     private final RecipeService recipeService;
 
+    private WebDataBinder webDataBinder;
+
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder){
+        this.webDataBinder = webDataBinder;
     }
 
     @GetMapping
     @RequestMapping("recipe/{id}/show")
     public String getRecipe(@PathVariable String id, Model model){
 
-        model.addAttribute("recipe", recipeService.findById(id).block());
+        model.addAttribute("recipe", recipeService.findById(id));
         return "show";
     }
 
@@ -39,7 +42,10 @@ public class RecipeController {
 
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult){
+    public String saveOrUpdate(@ModelAttribute("recipe") RecipeCommand recipeCommand){
+
+        webDataBinder.validate();
+        BindingResult bindingResult = webDataBinder.getBindingResult();
 
         if(bindingResult.hasErrors()){
             return "recipeForm";
@@ -53,7 +59,7 @@ public class RecipeController {
     @RequestMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
 
-        model.addAttribute("recipe",recipeService.findRecipeCommandById(id).block());
+        model.addAttribute("recipe",recipeService.findRecipeCommandById(id));
         return "recipeForm";
     }
 
@@ -65,7 +71,7 @@ public class RecipeController {
         return "redirect:/";
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+  /*  @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView handleNotFound(Exception exception){
 
@@ -73,5 +79,5 @@ public class RecipeController {
         modelAndView.setViewName("errors/404ErrorPage");
         modelAndView.addObject("exception", exception);
         return modelAndView;
-    }
+    }*/
 }
