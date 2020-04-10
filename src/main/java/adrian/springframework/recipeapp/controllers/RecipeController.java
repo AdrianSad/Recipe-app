@@ -1,12 +1,15 @@
 package adrian.springframework.recipeapp.controllers;
 
 import adrian.springframework.recipeapp.commands.RecipeCommand;
+import adrian.springframework.recipeapp.exceptions.NotFoundException;
 import adrian.springframework.recipeapp.services.RecipeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 @Controller
 public class RecipeController {
@@ -71,13 +74,12 @@ public class RecipeController {
         return "redirect:/";
     }
 
-  /*  @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception exception){
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NotFoundException.class, TemplateInputException.class})
+    public String handleNotFound(Exception exception, Model model){
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("errors/404ErrorPage");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }*/
+
+        model.addAttribute("exception", exception);
+        return "errors/404ErrorPage";
+    }
 }
