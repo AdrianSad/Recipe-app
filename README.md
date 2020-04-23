@@ -13,10 +13,9 @@ Application can be run with a different profile:
 
 `spring.profiles.active=prod` for production MySQL access.
 
-
-
-
-
+<br/>
+<br/>
+<br/>
 
 Application written while learning from the course : 
 
