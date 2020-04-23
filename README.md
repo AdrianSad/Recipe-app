@@ -12,3 +12,12 @@ Application can be run with a different profile:
 `spring.profiles.active=dev` for developer MySQL access.
 
 `spring.profiles.active=prod` for production MySQL access.
+
+
+
+
+
+
+Application written while learning from the course : 
+
+https://www.udemy.com/course/spring-framework-5-beginner-to-guru/
