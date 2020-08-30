@@ -16,7 +16,3 @@ Application can be run with a different profile:
 <br/>
 <br/>
 <br/>
-
-Application written while learning from the course : 
-
-https://www.udemy.com/course/spring-framework-5-beginner-to-guru/
