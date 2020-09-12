@@ -1,5 +1,5 @@
 # Recipe-app
-Recipe application using spring framework, H2 and MySQL databases
+Recipe application using spring framework, H2 and MySQL databases, thymeleaf and bootstrap. In addition there are severeal tests written using Mockito and JUnit.
 
 ### Databases Configuration
 
